@@ -7,6 +7,7 @@ function App() {
     <div className="App">
       <AppBar />
       <Button type="primary">Button</Button>
+      <img src="assets/icon.png" alt="test" />
     </div>
   )
 }

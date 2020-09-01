@@ -1,12 +1,15 @@
 const electron = require('electron')
 const app = electron.app
 const Menu = electron.Menu;
+const Tray = electron.Tray;
+const nativeImage = electron.nativeImage
 const path = require('path')
 const isDev = require('electron-is-dev')
 require('electron-reload')
 const BrowserWindow = electron.BrowserWindow
 
 let mainWindow
+let tray;
 
 function createWindow() {
   mainWindow = new BrowserWindow({
@@ -15,6 +18,7 @@ function createWindow() {
     frame: false,
     webPreferences: {
       nodeIntegration: true,
+      devTools: isDev
     },
   })
 
@@ -30,7 +34,24 @@ function createWindow() {
 
   Menu.setApplicationMenu(null)
 }
-app.on('ready', createWindow)
+
+app.on('ready', () => {
+  createWindow();
+
+  let iconPath = path.join(__dirname, 'assets/icon.ico')
+  console.log(iconPath)
+  const img = nativeImage.createFromPath(iconPath);
+  console.log(img)
+  tray = new Tray(img);
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' }
+  ])
+  tray.setContextMenu(contextMenu);
+  tray.setTitle('BFME: Reforged')
+  tray.setToolTip('BFME: Reforged')
+  mainWindow.tray = tray;
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
