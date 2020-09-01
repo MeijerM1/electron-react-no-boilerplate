@@ -1,5 +1,6 @@
 const electron = require('electron')
 const app = electron.app
+const Menu = electron.Menu;
 const path = require('path')
 const isDev = require('electron-is-dev')
 require('electron-reload')
@@ -9,8 +10,9 @@ let mainWindow
 
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1500,
+    height: 800,
+    frame: false,
     webPreferences: {
       nodeIntegration: true,
     },
@@ -25,6 +27,8 @@ function createWindow() {
   mainWindow.on('closed', () => {
     mainWindow = null
   })
+
+  Menu.setApplicationMenu(null)
 }
 app.on('ready', createWindow)
 

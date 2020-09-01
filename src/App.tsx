@@ -1,12 +1,13 @@
 import React from 'react';
-import {Button} from 'antd';
-import './App.less';
+import { Button } from 'antd';
+import { AppBar } from './modules/app-bar/AppBar';
 
 function App() {
   return (
-  <div className="App">
-    <Button type="primary">Button</Button>
-  </div>
+    <div className="App">
+      <AppBar />
+      <Button type="primary">Button</Button>
+    </div>
   )
 }
 

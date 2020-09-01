@@ -49,8 +49,6 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
-const lessRegex = /\.(less)$/;
-const lessModuleRegex = /\.module\.(less)$/;
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
@@ -435,20 +433,49 @@ module.exports = function (webpackEnv) {
             },
             {
               test: /\.less$/,
-              use: [
+              oneOf: [
                 {
-                  loader: 'style-loader',
-                },
-                {
-                  loader: 'css-loader', // translates CSS into CommonJS
-                },
-                {
-                  loader: 'less-loader', // compiles Less to CSS,
-                  options: {
-                    lessOptions: {
-                      javascriptEnabled: true
+                  include: /antd/ ,
+                  use: [
+                    'style-loader',
+                    'css-loader',
+                    {
+                      loader: 'less-loader', // compiles Less to CSS,
+                      options: {
+                        lessOptions: {
+                          modifyVars: {
+                            '@primary-color': '#C16B1B',
+                          },  
+                          javascriptEnabled: true
+                        },
+                      },
                     },
-                  }
+                  ]
+                },
+                {
+                  exclude: /antd/,
+                  use: [
+                    {
+                      loader: 'style-loader',
+                    },
+                    {
+                      loader: 'css-loader', // translates CSS into CommonJS
+                      options: {
+                        sourceMap: true,
+                        modules: true,
+                        localIdentName: "[local]___[hash:base64:5]"
+                      }
+                    },
+                    {
+                      loader: 'less-loader', // compiles Less to CSS,
+                      options: {
+                        lessOptions: {
+                          sourceMap: true,
+                          javascriptEnabled: true
+                        },
+                      },
+                    },
+                  ],
                 }
               ],
             },
